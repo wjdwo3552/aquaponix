@@ -12,7 +12,6 @@ app = Flask(__name__)
 @app.route('/graph')
 def graph():
     files = glob.glob("csv/table.csv")
-
     df = pd.read_csv(files[0])
 
     renderTo = ['DO','TEMPERATURE','PH']
