@@ -1,0 +1,83 @@
+<script>
+var chart_id = [];
+		var chart = [];
+		var series = [];
+		var title = [];
+		var xAxis = [];
+		var yAxis = [];
+
+		Highcharts.setOptions({
+		time: {
+			timezone: 'Europe/Oslo'
+		}
+	});
+
+		{% for chartInfoItem in chartInfo %}
+
+		chart.push({{  chartInfoItem[0]|safe }});
+		series.push({{ chartInfoItem[1]|safe }});
+		title.push({{ chartInfoItem[2]|safe }});
+		xAxis.push({{ chartInfoItem[3]|safe }});
+		yAxis.push({{ chartInfoItem[4]|safe }});
+
+		{% endfor %}
+
+		$(document).ready(function() {
+			$('#Temperature').highcharts({
+				chart: chart[1],
+				title: title[1],
+				xAxis: xAxis[1],
+				yAxis: yAxis[1],
+				series: series[1],
+				plotOptions: {
+					series:{
+						colorByPoint : true,
+						dataLabels:{
+							enabled : true, //각각의 데이터 값을 나타낼 것인지
+							color:'black' // 데이터 값을 나타낼 때 색
+						}
+					},
+					connectNulls : true //null인 지점에 연결할 것인지
+				},
+				time: {
+					gettimezoneOffset: 1
+				}
+			//   legend: {
+			// 	layout: 'vertical',
+			// 	floating: true,
+			// 	align: 'left', //정렬
+			// 	x: 120,
+			// 	verticalAlign: 'top',//정렬
+			// 	y: 0,
+			// 	itemStyle: {color: "Black"} //글자스타일
+			// }
+		});
+			$('#Do').highcharts({
+				chart: chart[0],
+				title: title[0],
+				xAxis: xAxis[0],
+				yAxis: yAxis[0],
+				series: series[0],
+				plotOptions: {
+					series:{
+						colorByPoint : true,
+						dataLabels:{
+							enabled : true, //각각의 데이터 값을 나타낼 것인지
+							color:'black' // 데이터 값을 나타낼 때 색
+						}
+					},
+					connectNulls : true //null인 지점에 연결할 것인지
+				},
+				time: {
+					gettimezoneOffset: 1
+				}
+			});
+			$('#Ph').highcharts({
+				chart: chart[2],
+				title: title[2],
+				xAxis: xAxis[2],
+				yAxis: yAxis[2],
+				series: series[2]
+			});
+		});
+	</script>
