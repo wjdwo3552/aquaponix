@@ -36,4 +36,4 @@ def data_check_and_visualize(data1, data2):
 
 data_check_and_visualize('ph', 'temperature')
 print("a")
-print("CC")
+print("CCddd")
