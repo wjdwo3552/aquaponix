@@ -11,6 +11,27 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/graph')
 def graph():
+    chartInfo = graphs()
+    return render_template('index.html', chartInfo=chartInfo)
+
+@app.route('/temperature')
+def temperature():
+ chartInfo = graphs()
+ return render_template('temperature.html', chartInfo=chartInfo)
+
+@app.route('/ph')
+def ph():
+ chartInfo = graphs()
+ return render_template('ph.html', chartInfo=chartInfo)
+
+@app.route('/do')
+def do():
+ chartInfo = graphs()
+ return render_template('do.html', chartInfo=chartInfo)
+
+
+
+def graphs():
     files = glob.glob("csv/table.csv")
     df = pd.read_csv(files[0])
 
@@ -48,7 +69,8 @@ def graph():
                  }
         
         chartInfo.append([chart, series, title, xAxis, yAxis])
-    return render_template('index.html', chartInfo=chartInfo)
+
+    return chartInfo
 
 def getSeries(df,option):
     #수조 탱크의 구분을 위한 프로세스
