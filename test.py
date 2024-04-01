@@ -1,4 +1,4 @@
-#%%
+#%
 import matplotlib.pyplot as plt
 from db.conn import connect_to_mysql, execute_query, close_connection
 
