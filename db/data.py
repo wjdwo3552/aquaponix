@@ -22,7 +22,7 @@ def retrieve_data():
         # NULL 값 존재하는 경우 해당 열의 평균으로 대체
     df.fillna({"do":df["do"].mean(),"ph":df["ph"].mean()}, inplace=True)
 
-    df.to_csv(r'~/aquaponix/csv')
+    df.to_csv(r'~/aquaponix/db/table.csv')
     # DF의 NULL값 개수 확인
     #df.info()
     
