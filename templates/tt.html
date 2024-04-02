@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-time Charts</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="container1" style="width: 800px; height: 400px;"></div>
+    <div id="container2" style="width: 800px; height: 400px;"></div>
+
+    <script>
+        $(document).ready(function() {
+            function createChart(containerId) {
+                var chart = Highcharts.chart(containerId, {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Temperature Data'
+                    },
+                    xAxis: {
+                        categories: []
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Temperature (°C)'
+                        }
+                    },
+                    series: [{
+                        name: 'Temperature',
+                        data: []
+                    }]
+                });
+
+                function requestData() {
+                    $.get('/data', function(response) {
+                        var data = response;
+                        var categories = data.map(function(item) {
+                            return item.date;
+                        });
+                        var temperatures = data.map(function(item) {
+                            return parseFloat(item.temperature);
+                        });
+
+                        chart.update({
+                            xAxis: {
+                                categories: categories
+                            },
+                            series: [{
+                                data: temperatures
+                            }]
+                        });
+
+                        setTimeout(requestData, 1000); // 5초마다 업데이트
+                    });
+                }
+
+                requestData(); // 초기 데이터 요청
+            }
+
+            createChart('container1'); // 첫 번째 그래프 생성
+            createChart('container2'); // 두 번째 그래프 생성
+        });
+    </script>
+</body>
+</html>
