@@ -5,14 +5,31 @@ import glob
 import json
 from datetime import datetime
 import calendar, time
- 
+import csv, os
+from apscheduler.schedulers.background import BackgroundScheduler
+from flask import jsonify
+from db import conn,data
 app = Flask(__name__)
 
+global sensor_status_list
+sensor_status_list = data.rcv_sensor_status()
+
+def SQ_rcv_eq_status():
+   global sensor_status_list
+   global tmp
+   sensor_status_list  = data.rcv_sensor_status()
+   tmp += 1
+   #print("SUCCESS!! : {}".format(tmp))
+
+schedule = BackgroundScheduler(daemon=True, timezone='Asia/Seoul')
+# schedule.add_job(scheduler, 'interval', seconds=15) 
+schedule.add_job(SQ_rcv_eq_status, 'interval', seconds=86400)
+schedule.start()
+
 @app.route('/')
-@app.route('/graph')
-def graph():
-    chartInfo = graphs()
-    return render_template('index.html', chartInfo=chartInfo)
+def index():
+
+    return render_template('index.html', sensor_status_list=sensor_status_list)
 
 @app.route('/temperature')
 def temperature():
@@ -29,6 +46,16 @@ def do():
  chartInfo = graphs()
  return render_template('do.html', chartInfo=chartInfo)
 
+@app.route('/tt')
+def tt():
+ chartInfo = graphs()
+ return render_template('tt.html', chartInfo=chartInfo)
+
+
+@app.route('/data')
+def get_data():
+    data = pd.read_csv('csv/test.csv')
+    return jsonify(data.to_dict(orient='records'))
 
 
 def graphs():
@@ -93,5 +120,23 @@ def getSeries(df,option):
     print(series)
     return series
  
+def scheduler():
+    f = open('csv/test.csv','a', newline='')
+    wr = csv.writer(f)
+    wr.writerow(['2024-04-02',36.5])
+    print("SUCCESS! {}".format(time.time()))
+    # print(f'TEST!! : {time.time()} {os.getpid()}')
+    # wr.writerow(['2024-04-03',13.0])
+    # print("SUCCESS! {}".format(time.time()))
+    # wr.writerow(['2024-04-04',11.0])
+    # print("SUCCESS! {}".format(time.time()))
+    # wr.writerow(['2024-04-05',16.0])
+    # print("SUCCESS! {}".format(time.time()))
+    f.close()
+    print("스케쥴 종료")
+
+
+
+
 if __name__ == "__main__":  
-    app.run(debug = True, host='0.0.0.0', port=5000, passthrough_errors=True)
+    app.run(debug = False,use_reloader=False, host='0.0.0.0', port=5000, passthrough_errors=True)

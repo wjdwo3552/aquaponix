@@ -14,4 +14,4 @@ data = retrieve_data()
 #     print("\n")
 
 import calendar
-print(calendar.timegm(time.strptime('2000-01-01', '%Y-%m-%d')))
+#print(calendar.timegm(time.strptime('2000-01-01', '%Y-%m-%d')))

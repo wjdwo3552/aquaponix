@@ -1,13 +1,13 @@
 import mysql.connector
 
-def connect_to_mysql(host, port, user, password, database, auth_plugin='mysql_native_password'):
+def connect_to_mysql(auth_plugin='mysql_native_password'):
 
     connection = mysql.connector.connect(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=database,
+        host='121.155.34.16',
+        port='33063',
+        user='sysop',
+        password='data001!',
+        database='fms',
         auth_plugin=auth_plugin
     )
 
