@@ -1,7 +1,8 @@
 import mysql.connector
+import logging, logging.handlers
 
 def connect_to_mysql(auth_plugin='mysql_native_password'):
-
+    
     connection = mysql.connector.connect(
         host='121.155.34.16',
         port='33063',
